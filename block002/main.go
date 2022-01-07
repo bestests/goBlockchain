@@ -104,7 +104,6 @@ func (pow *ProofOfWork) Run () (int, []byte) {
 
 	loger.Printf("Mining the block containing \"%s\"\n", pow.block.Data)
 
-
 	for nonce < maxNonce {
 		data := pow.prepareData(nonce)
 		hash = sha256.Sum256(data)
@@ -118,7 +117,6 @@ func (pow *ProofOfWork) Run () (int, []byte) {
 			nonce++
 		}
 	}
-
 
 	/*
 	data := pow.prepareData(nonce)
