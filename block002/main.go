@@ -104,10 +104,11 @@ func (pow *ProofOfWork) Run () (int, []byte) {
 
 	loger.Printf("Mining the block containing \"%s\"\n", pow.block.Data)
 
+
 	for nonce < maxNonce {
 		data := pow.prepareData(nonce)
 		hash = sha256.Sum256(data)
-		fmt.Printf("\r%x", hash)
+		fmt.Printf("\rINFO: %s - %x : %d", nowStr(), hash, nonce);
 		hashInt.SetBytes(hash[:])
 
 		if hashInt.Cmp(pow.target) == -1 {
@@ -118,11 +119,13 @@ func (pow *ProofOfWork) Run () (int, []byte) {
 		}
 	}
 
+
 	/*
 	data := pow.prepareData(nonce)
 	hash = sha256.Sum256(data)
-	fmt.Printf("\r%x", hash);
+	fmt.Printf("\rINFO: %s - %x : %d", nowStr(), hash, nonce);
 	hashInt.SetBytes(hash[:])
+	fmt.Println()
 	*/
 
 	loger.Print("Mining End\n\n")
@@ -155,6 +158,14 @@ func IntToHex (num int64) []byte {
 	return buff.Bytes()
 }
 
+func nowStr () (str string) {
+
+	now := time.Now()
+	str = now.Format("2006-01-02 15:04:05")
+
+	return
+}
+
 func main () {
 	bc := NewBlockchain()
 
@@ -165,10 +176,10 @@ func main () {
 		fmt.Printf("Prev Hash : %x\n", block.PrevBlockHash)
 		fmt.Printf("Data      : %s\n", block.Data)
 		fmt.Printf("Hash      : %x\n", block.Hash)
-		fmt.Printf("Nonce     : %d\n\n", block.Nonce)
+		fmt.Printf("Nonce     : %d\n", block.Nonce)
 		pow := NewProofOfWork(block)
 		fmt.Printf("Pow       : %s\n", strconv.FormatBool(pow.Validate()))
-		fmt.Println(pow.target)
+		fmt.Println()
 	}
 }
 
